@@ -1,0 +1,266 @@
+{
+  "events": [
+    {
+      "id": "match-live-1",
+      "date": "2026-09-28T17:30:00Z",
+      "name": "Arsenal vs Chelsea",
+      "shortName": "ARS vs CHE",
+      "season": { "slug": "soccer/eng.1" },
+      "competitions": [
+        {
+          "status": {
+            "type": {
+              "shortDetail": "68'",
+              "description": "In Progress",
+              "state": "in",
+              "completed": false
+            }
+          },
+          "venue": { "fullName": "Emirates Stadium, London" },
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "2",
+              "team": {
+                "id": "359",
+                "name": "Arsenal",
+                "displayName": "Arsenal",
+                "abbreviation": "ARS",
+                "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/359.png"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "1",
+              "team": {
+                "id": "363",
+                "name": "Chelsea",
+                "displayName": "Chelsea",
+                "abbreviation": "CHE",
+                "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/363.png"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "match-live-2",
+      "date": "2026-09-28T18:00:00Z",
+      "name": "Real Madrid vs Bayern Munich",
+      "shortName": "RMA vs BAY",
+      "season": { "slug": "soccer/uefa.champions" },
+      "competitions": [
+        {
+          "status": {
+            "type": {
+              "shortDetail": "42'",
+              "description": "In Progress",
+              "state": "in",
+              "completed": false
+            }
+          },
+          "venue": { "fullName": "Santiago Bernabéu, Madrid" },
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "1",
+              "team": {
+                "id": "86",
+                "name": "Real Madrid",
+                "displayName": "Real Madrid",
+                "abbreviation": "RMA",
+                "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/86.png"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "1",
+              "team": {
+                "id": "132",
+                "name": "Bayern Munich",
+                "displayName": "Bayern Munich",
+                "abbreviation": "BAY",
+                "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/132.png"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "match-today-1",
+      "date": "2026-09-28T20:00:00Z",
+      "name": "Manchester City vs Liverpool",
+      "shortName": "MCI vs LIV",
+      "season": { "slug": "soccer/eng.1" },
+      "competitions": [
+        {
+          "status": {
+            "type": {
+              "shortDetail": "8:00 PM",
+              "description": "Scheduled",
+              "state": "pre",
+              "completed": false
+            }
+          },
+          "venue": { "fullName": "Etihad Stadium, Manchester" },
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "",
+              "team": {
+                "id": "382",
+                "name": "Manchester City",
+                "displayName": "Manchester City",
+                "abbreviation": "MCI",
+                "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/382.png"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "",
+              "team": {
+                "id": "375",
+                "name": "Liverpool",
+                "displayName": "Liverpool",
+                "abbreviation": "LIV",
+                "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/375.png"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "match-today-2",
+      "date": "2026-09-28T22:30:00Z",
+      "name": "Los Angeles Lakers vs Boston Celtics",
+      "shortName": "LAL vs BOS",
+      "season": { "slug": "basketball/nba" },
+      "competitions": [
+        {
+          "status": {
+            "type": {
+              "shortDetail": "10:30 PM",
+              "description": "Scheduled",
+              "state": "pre",
+              "completed": false
+            }
+          },
+          "venue": { "fullName": "Crypto.com Arena, Los Angeles" },
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "",
+              "team": {
+                "id": "13",
+                "name": "Los Angeles Lakers",
+                "displayName": "LA Lakers",
+                "abbreviation": "LAL",
+                "logo": "https://a.espncdn.com/i/teamlogos/nba/500/lal.png"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "",
+              "team": {
+                "id": "2",
+                "name": "Boston Celtics",
+                "displayName": "Boston Celtics",
+                "abbreviation": "BOS",
+                "logo": "https://a.espncdn.com/i/teamlogos/nba/500/bos.png"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "match-nfl-1",
+      "date": "2026-09-28T23:20:00Z",
+      "name": "Kansas City Chiefs vs Buffalo Bills",
+      "shortName": "KC vs BUF",
+      "season": { "slug": "football/nfl" },
+      "competitions": [
+        {
+          "status": {
+            "type": {
+              "shortDetail": "7:20 PM",
+              "description": "Scheduled",
+              "state": "pre",
+              "completed": false
+            }
+          },
+          "venue": { "fullName": "GEHA Field at Arrowhead Stadium, Kansas City" },
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "",
+              "team": {
+                "id": "12",
+                "name": "Kansas City Chiefs",
+                "displayName": "Kansas City Chiefs",
+                "abbreviation": "KC"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "",
+              "team": {
+                "id": "2",
+                "name": "Buffalo Bills",
+                "displayName": "Buffalo Bills",
+                "abbreviation": "BUF"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "match-final-1",
+      "date": "2026-09-28T14:00:00Z",
+      "name": "Barcelona vs Atlético Madrid",
+      "shortName": "BAR vs ATM",
+      "season": { "slug": "soccer/uefa.champions" },
+      "competitions": [
+        {
+          "status": {
+            "type": {
+              "shortDetail": "Final",
+              "description": "Final",
+              "state": "post",
+              "completed": true
+            }
+          },
+          "venue": { "fullName": "Camp Nou, Barcelona" },
+          "competitors": [
+            {
+              "homeAway": "home",
+              "score": "3",
+              "team": {
+                "id": "83",
+                "name": "Barcelona",
+                "displayName": "Barcelona",
+                "abbreviation": "BAR",
+                "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/83.png"
+              }
+            },
+            {
+              "homeAway": "away",
+              "score": "1",
+              "team": {
+                "id": "1068",
+                "name": "Atlético Madrid",
+                "displayName": "Atlético Madrid",
+                "abbreviation": "ATM",
+                "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/1068.png"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

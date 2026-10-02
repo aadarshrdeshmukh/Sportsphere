@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <!-- Background Primary Gradient (#0B6E4F) -->
+    <linearGradient id="primaryBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E8A63"/>
+      <stop offset="40%" stop-color="#0B6E4F"/>
+      <stop offset="100%" stop-color="#064230"/>
+    </linearGradient>
+
+    <!-- Energy Ribbon Gradient (#FF6B35) -->
+    <linearGradient id="energyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFA07A"/>
+      <stop offset="35%" stop-color="#FF6B35"/>
+      <stop offset="100%" stop-color="#E85015"/>
+    </linearGradient>
+
+    <!-- Ambient Highlight Glow -->
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.3"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <clipPath id="squircleClip">
+      <rect x="8" y="8" width="112" height="112" rx="28" />
+    </clipPath>
+  </defs>
+
+  <!-- Squircle Base with Subtle Border -->
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#primaryBgGrad)"/>
+  <rect x="8.5" y="8.5" width="111" height="111" rx="27.5" stroke="#FFFFFF" stroke-opacity="0.22" stroke-width="1"/>
+
+  <!-- Ambient Light Reflection in App Icon -->
+  <g clip-path="url(#squircleClip)">
+    <circle cx="64" cy="20" r="44" fill="url(#glowGrad)"/>
+  </g>
+
+  <!-- Sphere / Globe Graphic Core -->
+  <g id="sphereCore">
+    <!-- Outer Sphere Border -->
+    <circle cx="64" cy="64" r="32" stroke="#FFFFFF" stroke-width="2.8" stroke-opacity="0.9" fill="#09543C" fill-opacity="0.4"/>
+    
+    <!-- Sphere Longitude / Athletic Seams (Material Curved Latitudes) -->
+    <ellipse cx="64" cy="64" rx="16" ry="32" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.45"/>
+    <ellipse cx="64" cy="64" rx="32" ry="12" stroke="#FFFFFF" stroke-width="1.8" stroke-opacity="0.45"/>
+    <line x1="32" y1="64" x2="96" y2="64" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.5"/>
+    <line x1="64" y1="32" x2="64" y2="96" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.5"/>
+  </g>
+
+  <!-- Dynamic News / Sports Orbit Ribbon (Secondary #FF6B35) -->
+  <path d="M30 82 C34 52, 78 30, 98 46 C105 52, 99 64, 88 72 C74 82, 45 82, 30 82" 
+        stroke="url(#energyGrad)" 
+        stroke-width="5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <path d="M42 90 C62 98, 88 92, 98 78" 
+        stroke="url(#energyGrad)" 
+        stroke-width="3" 
+        stroke-linecap="round" 
+        stroke-opacity="0.85"/>
+
+  <!-- Live Pulse Dot (#D32F2F) with White Ring -->
+  <circle cx="94" cy="46" r="4.5" fill="#D32F2F"/>
+  <circle cx="94" cy="46" r="6" stroke="#FFFFFF" stroke-width="1.5"/>
+
+  <!-- Mini Sparkle / Broadcast Satellite Accent -->
+  <circle cx="34" cy="38" r="2.5" fill="#FFFFFF" fill-opacity="0.8"/>
+</svg>

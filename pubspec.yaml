@@ -1,0 +1,30 @@
+name: sportsphere
+description: SportSphere Flutter app converted from Figma.
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  http: ^1.2.2
+  shared_preferences: ^2.3.2
+  intl: ^0.19.0
+  cached_network_image: ^3.4.1
+  url_launcher: ^6.3.1
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
+  flutter_svg: ^2.3.0
+  iconsax_flutter: ^1.0.0
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/mock/
+    - assets/svg/
+    - assets/images/

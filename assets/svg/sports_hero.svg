@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260" fill="none">
+  <defs>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00A876" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#004E3A" stop-opacity="0.05"/>
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#007A5A"/>
+      <stop offset="100%" stop-color="#004E3A"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF8A50"/>
+      <stop offset="100%" stop-color="#FF6B35"/>
+    </linearGradient>
+    <linearGradient id="ballGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#D9E2DC"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Ambient Glow -->
+  <circle cx="180" cy="130" r="105" fill="url(#glowGrad)"/>
+  
+  <!-- Outer Orbit Rings -->
+  <ellipse cx="180" cy="130" rx="140" ry="50" stroke="#007A5A" stroke-width="2" stroke-dasharray="6 6" stroke-opacity="0.4" transform="rotate(-15 180 130)"/>
+  <ellipse cx="180" cy="130" rx="140" ry="50" stroke="#FF6B35" stroke-width="2" stroke-dasharray="4 4" stroke-opacity="0.4" transform="rotate(25 180 130)"/>
+
+  <!-- Orbit Nodes -->
+  <circle cx="50" cy="110" r="6" fill="#FF6B35"/>
+  <circle cx="310" cy="150" r="6" fill="#00A876"/>
+  <circle cx="280" cy="80" r="4" fill="#FFFFFF" fill-opacity="0.8"/>
+  <circle cx="80" cy="180" r="5" fill="#FF8A50"/>
+
+  <!-- Central Shield / Crest -->
+  <path d="M180 35 L245 65 V140 C245 185 180 220 180 220 C180 220 115 185 115 140 V65 Z" 
+        fill="url(#shieldGrad)" stroke="#109B74" stroke-width="4"/>
+
+  <!-- Shield Inner Border -->
+  <path d="M180 48 L233 72 V136 C233 172 180 203 180 203 C180 203 127 172 127 136 V72 Z" 
+        fill="none" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="2"/>
+
+  <!-- Soccer Ball in Center -->
+  <circle cx="180" cy="125" r="42" fill="url(#ballGrad)" stroke="#004E3A" stroke-width="2.5"/>
+  
+  <!-- Pentagon & Seams on Ball -->
+  <polygon points="180,110 193,120 188,135 172,135 167,120" fill="#004E3A"/>
+  <line x1="180" y1="110" x2="180" y2="92" stroke="#004E3A" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="193" y1="120" x2="208" y2="124" stroke="#004E3A" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="188" y1="135" x2="198" y2="150" stroke="#004E3A" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="172" y1="135" x2="162" y2="150" stroke="#004E3A" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="167" y1="120" x2="152" y2="124" stroke="#004E3A" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Outer Seam Connections -->
+  <path d="M180 92 C198 94 212 108 218 116" stroke="#004E3A" stroke-width="2.2" fill="none"/>
+  <path d="M208 124 C216 138 214 150 208 158" stroke="#004E3A" stroke-width="2.2" fill="none"/>
+  <path d="M198 150 C188 162 172 162 162 150" stroke="#004E3A" stroke-width="2.2" fill="none"/>
+  <path d="M152 124 C144 138 146 150 152 158" stroke="#004E3A" stroke-width="2.2" fill="none"/>
+  <path d="M180 92 C162 94 148 108 142 116" stroke="#004E3A" stroke-width="2.2" fill="none"/>
+
+  <!-- Star Badge on Top -->
+  <polygon points="180,18 184,27 194,27 186,33 189,43 180,37 171,43 174,33 166,27 176,27" fill="url(#orangeGrad)"/>
+
+  <!-- Dynamic Energy Arcs -->
+  <path d="M100 80 Q130 50 160 60" stroke="#FF6B35" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M260 170 Q230 200 200 190" stroke="#00A876" stroke-width="3" stroke-linecap="round" fill="none"/>
+</svg>

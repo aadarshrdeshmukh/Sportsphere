@@ -1,0 +1,31 @@
+{
+  "name": "sportsphere-backend",
+  "version": "1.0.0",
+  "description": "SportSphere Express.js API backend with caching, sports aggregator, and Firebase Admin SDK",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase-admin": "^13.0.1",
+    "helmet": "^8.0.0",
+    "morgan": "^1.10.0",
+    "node-cache": "^5.1.2"
+  },
+  "keywords": [
+    "sportsphere",
+    "express",
+    "espn",
+    "sports-api",
+    "firebase"
+  ],
+  "author": "",
+  "license": "ISC"
+}
