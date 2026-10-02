@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/team.dart';
@@ -20,11 +21,19 @@ class FavoritesController extends ChangeNotifier {
   Set<String> get ids => Set.unmodifiable(_teams.keys.toSet());
   bool contains(String id) => _teams.containsKey(id);
 
-  Future<void> load({String? userId}) async {
+  Future<void> load({String? userId, bool seedMock = false}) async {
     _userId = userId;
     final saved =
         (await SharedPreferences.getInstance()).getStringList(_key) ?? const [];
     _teams.clear();
+    if (saved.isEmpty && seedMock) {
+      try {
+        final text = await rootBundle.loadString('assets/mock/favorites.json');
+        final raw = jsonDecode(text) as Map<String, dynamic>;
+        saved.addAll((raw['teams'] as List? ?? []).map(
+            (value) => jsonEncode((value as Map).cast<String, dynamic>())));
+      } catch (_) {}
+    }
     for (final value in saved) {
       try {
         final json = jsonDecode(value) as Map<String, dynamic>;

@@ -57,7 +57,7 @@ class _AppState extends State<App> {
     _auth = widget.auth ?? AuthController();
     _theme = ThemeController();
 
-    _favorites.load(userId: _auth.user?.uid);
+    _favorites.load(userId: _auth.user?.uid, seedMock: true);
     _auth.addListener(_onAuthChanged);
   }
 

@@ -52,93 +52,6 @@ class _NewsState extends State<News> {
     }
   }
 
-  Widget _buildFilterBar(ColorScheme colorScheme) {
-    final leagueLabel = _news.selectedLeague?.label ?? 'All Sports';
-    final hasActiveFilter =
-        _news.selectedLeague != null || _news.selectedCategory != 'All';
-
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: _showFilterSheet,
-        borderRadius: BorderRadius.circular(14),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-          decoration: BoxDecoration(
-            color: colorScheme.surface,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(
-              color: hasActiveFilter
-                  ? colorScheme.primary.withValues(alpha: 0.4)
-                  : colorScheme.outline,
-              width: 1,
-            ),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                Iconsax.setting_4,
-                size: 18,
-                color: hasActiveFilter
-                    ? (isDark ? Colors.white : colorScheme.primary)
-                    : (isDark ? Colors.white70 : colorScheme.onSurface.withValues(alpha: 0.7)),
-              ),
-              const SizedBox(width: 10),
-              // League chip
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: _news.selectedLeague != null
-                      ? (isDark ? colorScheme.primary : colorScheme.primaryContainer)
-                      : colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  leagueLabel,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: _news.selectedLeague != null
-                        ? (isDark ? Colors.white : colorScheme.primary)
-                        : (isDark ? Colors.white70 : colorScheme.onSurface.withValues(alpha: 0.8)),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 6),
-              // Category chip (if not 'All')
-              if (_news.selectedCategory != 'All')
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: isDark ? colorScheme.primary : colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    _news.selectedCategory,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      color: isDark ? Colors.white : colorScheme.primary,
-                    ),
-                  ),
-                ),
-              const Spacer(),
-              Icon(
-                Iconsax.arrow_down_1,
-                size: 20,
-                color: isDark ? Colors.white60 : colorScheme.onSurface.withValues(alpha: 0.5),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -152,21 +65,16 @@ class _NewsState extends State<News> {
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            title: const Text('News & Stories'),
+            title: const Text('News'),
             actions: [
               IconButton(
-                tooltip: 'Filter news & categories',
+                tooltip: 'Filter news',
                 onPressed: _showFilterSheet,
                 icon: Badge(
                   isLabelVisible: hasActiveFilter,
                   smallSize: 8,
-                  child: const Icon(Iconsax.setting_4),
+                  child: const Icon(Iconsax.search_normal_1),
                 ),
-              ),
-              IconButton(
-                tooltip: 'Refresh news',
-                onPressed: _news.isLoading ? null : _news.refresh,
-                icon: const Icon(Iconsax.refresh_2),
               ),
             ],
           ),
@@ -174,11 +82,10 @@ class _NewsState extends State<News> {
             onRefresh: _news.refresh,
             child: ListView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 18),
               children: [
-                // ── 1. Filter Bar (opens bottom sheet) ──
-                _buildFilterBar(colorScheme),
-                const SizedBox(height: 16),
+                _buildCategoryFilters(colorScheme),
+                const SizedBox(height: 14),
 
                 // ── 2. Notice / Error Banner ──
                 if (_news.showingCachedData || _news.error != null) ...[
@@ -189,32 +96,6 @@ class _NewsState extends State<News> {
                   const SizedBox(height: 14),
                 ],
 
-                // ── 3. Section Heading ──
-              Row(
-                children: [
-                  Text(
-                    _news.selectedLeague?.label ?? 'Top Headlines',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.2,
-                    ),
-                  ),
-                  const Spacer(),
-                  if (_news.filteredArticles.isNotEmpty)
-                    Text(
-                      '${_news.filteredArticles.length} stories',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: colorScheme.onSurface.withValues(alpha: 0.5),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 12),
-
-              // ── 5. Article List or Empty State ──
               if (_news.isLoading && _news.articles.isEmpty)
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 72),
@@ -236,8 +117,23 @@ class _NewsState extends State<News> {
                     },
                   ),
                 )
-              else
-                ..._news.filteredArticles.map(_articleCard),
+              else ...[
+                if (_news.filteredArticles.isNotEmpty) ...[
+                  FeaturedNewsCard(
+                    title: _news.filteredArticles.first.title,
+                    cat: _news.filteredArticles.first.category,
+                    age: _relativeTime(_news.filteredArticles.first.publishedAt),
+                    imageUrl: _news.filteredArticles.first.imageUrl,
+                    onTap: () => Navigator.pushNamed(
+                      context,
+                      '/article',
+                      arguments: _news.filteredArticles.first,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ..._news.filteredArticles.skip(1).map(_articleCard),
+                ],
+              ],
               const SizedBox(height: 16),
             ],
           ),
@@ -245,6 +141,40 @@ class _NewsState extends State<News> {
         bottomNavigationBar: const AppNavigation(index: 2),
         );
       },
+    );
+  }
+
+  Widget _buildCategoryFilters(ColorScheme colorScheme) {
+    final categories = _news.categories;
+    return Row(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                for (final category in categories.take(4)) ...[
+                  SportFilterChip(
+                    label: category,
+                    isSelected: _news.selectedCategory == category,
+                    onTap: () => _news.selectCategory(category),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+              ],
+            ),
+          ),
+        ),
+        IconButton(
+          tooltip: 'Refresh news',
+          onPressed: _news.isLoading ? null : _news.refresh,
+          icon: const Icon(Iconsax.refresh_2),
+          style: IconButton.styleFrom(
+            foregroundColor: colorScheme.primary,
+            backgroundColor: colorScheme.primaryContainer,
+          ),
+        ),
+      ],
     );
   }
 

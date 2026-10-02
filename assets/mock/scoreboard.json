@@ -261,6 +261,96 @@
           ]
         }
       ]
+    },
+    {
+      "id": "mock-arsenal-city",
+      "date": "2027-02-18T16:30:00Z",
+      "name": "Arsenal vs Manchester City",
+      "shortName": "ARS vs MCI",
+      "season": { "slug": "soccer/eng.1" },
+      "competitions": [{
+        "status": { "type": { "shortDetail": "16:30", "state": "pre", "completed": false } },
+        "venue": { "fullName": "Emirates Stadium, London" },
+        "competitors": [
+          { "homeAway": "home", "score": "", "team": { "id": "359", "name": "Arsenal", "displayName": "Arsenal", "abbreviation": "ARS", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/359.png" } },
+          { "homeAway": "away", "score": "", "team": { "id": "382", "name": "Manchester City", "displayName": "Manchester City", "abbreviation": "MCI", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/382.png" } }
+        ]
+      }]
+    },
+    {
+      "id": "mock-arsenal-porto",
+      "date": "2027-02-21T20:00:00Z",
+      "name": "Arsenal vs FC Porto",
+      "shortName": "ARS vs FCP",
+      "season": { "slug": "soccer/uefa.champions" },
+      "competitions": [{
+        "status": { "type": { "shortDetail": "20:00", "state": "pre", "completed": false } },
+        "venue": { "fullName": "Emirates Stadium, London" },
+        "competitors": [
+          { "homeAway": "home", "score": "", "team": { "id": "359", "name": "Arsenal", "displayName": "Arsenal", "abbreviation": "ARS", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/359.png" } },
+          { "homeAway": "away", "score": "", "team": { "id": "437", "name": "FC Porto", "displayName": "FC Porto", "abbreviation": "FCP", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/437.png" } }
+        ]
+      }]
+    },
+    {
+      "id": "mock-arsenal-newcastle",
+      "date": "2027-02-24T20:00:00Z",
+      "name": "Arsenal vs Newcastle",
+      "shortName": "ARS vs NEW",
+      "season": { "slug": "soccer/eng.1" },
+      "competitions": [{
+        "status": { "type": { "shortDetail": "20:00", "state": "pre", "completed": false } },
+        "venue": { "fullName": "Emirates Stadium, London" },
+        "competitors": [
+          { "homeAway": "home", "score": "", "team": { "id": "359", "name": "Arsenal", "displayName": "Arsenal", "abbreviation": "ARS", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/359.png" } },
+          { "homeAway": "away", "score": "", "team": { "id": "361", "name": "Newcastle", "displayName": "Newcastle", "abbreviation": "NEW", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/361.png" } }
+        ]
+      }]
+    },
+    {
+      "id": "mock-arsenal-united",
+      "date": "2027-03-04T20:00:00Z",
+      "name": "Arsenal vs Manchester United",
+      "shortName": "ARS vs MUN",
+      "season": { "slug": "soccer/eng.1" },
+      "competitions": [{
+        "status": { "type": { "shortDetail": "20:00", "state": "pre", "completed": false } },
+        "venue": { "fullName": "Emirates Stadium, London" },
+        "competitors": [
+          { "homeAway": "home", "score": "", "team": { "id": "359", "name": "Arsenal", "displayName": "Arsenal", "abbreviation": "ARS", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/359.png" } },
+          { "homeAway": "away", "score": "", "team": { "id": "360", "name": "Manchester United", "displayName": "Manchester United", "abbreviation": "MUN", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/360.png" } }
+        ]
+      }]
+    },
+    {
+      "id": "mock-chelsea-united",
+      "date": "2027-02-19T20:00:00Z",
+      "name": "Chelsea vs Manchester United",
+      "shortName": "CHE vs MUN",
+      "season": { "slug": "soccer/eng.1" },
+      "competitions": [{
+        "status": { "type": { "shortDetail": "20:00", "state": "pre", "completed": false } },
+        "venue": { "fullName": "Stamford Bridge, London" },
+        "competitors": [
+          { "homeAway": "home", "score": "", "team": { "id": "363", "name": "Chelsea", "displayName": "Chelsea", "abbreviation": "CHE", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/363.png" } },
+          { "homeAway": "away", "score": "", "team": { "id": "360", "name": "Manchester United", "displayName": "Manchester United", "abbreviation": "MUN", "logo": "https://a.espncdn.com/i/teamlogos/soccer/500/360.png" } }
+        ]
+      }]
+    },
+    {
+      "id": "mock-lakers-clippers",
+      "date": "2027-02-20T19:30:00Z",
+      "name": "Los Angeles Lakers vs LA Clippers",
+      "shortName": "LAL vs LAC",
+      "season": { "slug": "basketball/nba" },
+      "competitions": [{
+        "status": { "type": { "shortDetail": "19:30", "state": "pre", "completed": false } },
+        "venue": { "fullName": "Crypto.com Arena, Los Angeles" },
+        "competitors": [
+          { "homeAway": "home", "score": "", "team": { "id": "13", "name": "Los Angeles Lakers", "displayName": "LA Lakers", "abbreviation": "LAL", "logo": "https://a.espncdn.com/i/teamlogos/nba/500/lal.png" } },
+          { "homeAway": "away", "score": "", "team": { "id": "12", "name": "LA Clippers", "displayName": "LA Clippers", "abbreviation": "LAC", "logo": "https://a.espncdn.com/i/teamlogos/nba/500/lac.png" } }
+        ]
+      }]
     }
   ]
 }

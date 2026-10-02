@@ -816,13 +816,13 @@ class FeaturedNewsCard extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         title,
-                        maxLines: 2,
+                        maxLines: 4,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 25,
                           fontWeight: FontWeight.w800,
-                          height: 1.25,
+                          height: 1.08,
                         ),
                       ),
                     ],

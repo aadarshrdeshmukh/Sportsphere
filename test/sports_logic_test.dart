@@ -328,9 +328,9 @@ void main() {
       expect(scores.error, contains('saved/mock data'));
       expect(scores.data.first.id, 'match-live-1');
       expect(scores.data.first.home.name, 'Arsenal');
-      expect(news.data.first.id, 'espn-news-1');
+        expect(news.data.first.id, 'sportsphere-news-1');
       expect(news.data.first.title,
-          'Arsenal secure crucial derby victory as title race intensifies');
+          'Haaland strikes twice as Man City dominate the derby clash at the Etihad');
     });
   });
 
@@ -453,11 +453,10 @@ void main() {
 
       expect(find.text('Welcome Back to SportSphere'), findsOneWidget);
       expect(find.text('Sign In'), findsWidgets);
-      expect(find.text('Continue as Guest'), findsOneWidget);
 
-      await tester.tap(find.text('Create Account'));
+      await tester.tap(find.text('Sign Up'));
       await tester.pump();
-      expect(find.text('Join SportSphere'), findsOneWidget);
+      expect(find.text('Create Your Account'), findsOneWidget);
 
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(

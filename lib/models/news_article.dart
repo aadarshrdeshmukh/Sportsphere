@@ -7,11 +7,15 @@ class NewsArticle {
       this.imageUrl,
       this.url,
       this.category = 'Sports',
-      this.source = 'ESPN'});
+            this.source = 'ESPN',
+            this.author,
+            this.readTime});
   final String id, title, description, category, source;
   final DateTime publishedAt;
   final String? imageUrl;
   final String? url;
+    final String? author;
+    final int? readTime;
 
   factory NewsArticle.fromEspn(Map<String, dynamic> json, {String? category}) {
     final images = json['images'] as List?;
@@ -31,7 +35,9 @@ class NewsArticle {
             : null,
         category: category ??
             '${json['categories'] is List && (json['categories'] as List).isNotEmpty ? (json['categories'] as List).first['description'] : 'Sports'}',
-        source: '${(json['source'] as Map?)?['name'] ?? 'ESPN'}');
+        source: '${(json['source'] as Map?)?['name'] ?? 'ESPN'}',
+        author: json['author'] as String?,
+        readTime: (json['readTime'] as num?)?.toInt());
   }
 
   Map<String, dynamic> toJson() => {
@@ -48,6 +54,8 @@ class NewsArticle {
           {'description': category}
         ],
         'source': {'name': source},
+                'author': author,
+                'readTime': readTime,
         'links': url == null
             ? null
             : {

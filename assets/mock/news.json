@@ -1,75 +1,68 @@
 {
   "articles": [
     {
-      "id": "espn-news-1",
-      "headline": "Arsenal secure crucial derby victory as title race intensifies",
-      "description": "A dominant second-half display saw Arsenal take all three points in a thrilling clash at the Emirates Stadium.",
-      "published": "2026-09-28T16:00:00Z",
+      "id": "sportsphere-news-1",
+      "headline": "Haaland strikes twice as Man City dominate the derby clash at the Etihad",
+      "description": "Erling Haaland scored twice as Manchester City produced a commanding performance to dominate the derby clash at the Etihad.",
+      "published": "2026-10-03T08:45:00Z",
       "images": [
         {
           "url": "https://a.espncdn.com/combiner/i?img=/photo/2024/0915/r1387413_1296x729_16-9.jpg&w=640"
         }
       ],
       "categories": [
-        { "description": "Premier League" }
+        { "description": "Football" }
       ],
-      "source": { "name": "ESPN" },
-      "links": {
-        "web": { "href": "https://www.espn.com/football/story" }
-      }
+      "source": { "name": "SportSphere News" }
     },
     {
       "id": "espn-news-2",
-      "headline": "Champions League Preview: European giants clash in blockbuster quarterfinals",
-      "description": "Tactical analysis, predicted lineups, and key individual matchups ahead of this week's European showdowns.",
-      "published": "2026-09-28T14:30:00Z",
+      "headline": "Hamilton confirms strategy shift ahead of Monaco GP qualifying",
+      "description": "Lewis Hamilton has confirmed a strategy shift ahead of Monaco Grand Prix qualifying as the team searches for a stronger weekend.",
+      "published": "2026-10-03T06:45:00Z",
       "images": [
         {
           "url": "https://a.espncdn.com/combiner/i?img=/photo/2024/0417/r1320492_1296x729_16-9.jpg&w=640"
         }
       ],
       "categories": [
-        { "description": "Champions League" }
+        { "description": "F1" }
       ],
-      "source": { "name": "ESPN" },
-      "links": {
-        "web": { "href": "https://www.espn.com/football/story" }
-      }
+      "source": { "name": "SportSphere News" }
     },
     {
       "id": "espn-news-3",
-      "headline": "NBA Power Rankings: Contenders separate as playoff positioning battles heat up",
-      "description": "A fresh look at the top contenders across the Eastern and Western conferences following a pivotal week of hoops.",
-      "published": "2026-09-28T12:00:00Z",
+      "headline": "LeBron reaches historic scoring milestone in NBA clash",
+      "description": "LeBron James reached another historic scoring milestone during a memorable NBA clash, adding another chapter to his remarkable career.",
+      "published": "2026-10-03T04:45:00Z",
       "images": [
         {
           "url": "https://a.espncdn.com/combiner/i?img=/photo/2024/0523/r1336683_1296x729_16-9.jpg&w=640"
         }
       ],
       "categories": [
-        { "description": "NBA" }
+        { "description": "Basketball" }
       ],
-      "source": { "name": "ESPN" },
-      "links": {
-        "web": { "href": "https://www.espn.com/nba/story" }
-      }
+      "source": { "name": "SportSphere News" }
     },
     {
       "id": "espn-news-4",
-      "headline": "NFL Weekend Roundup: Game-winning drives and major injury updates",
-      "description": "Breaking down all the thrilling finishes, standout individual performances, and playoff implications.",
-      "published": "2026-09-28T09:15:00Z",
+      "headline": "Arsenal Clinch Crucial Victory in Thrilling London Derby Clash",
+      "description": "In an intense encounter that kept fans on the edge of their seats, Arsenal secured a breathtaking 2-1 victory over Chelsea. The match showcased tactical brilliance from both sides, but it was Arsenal's relentless offensive press in the second half that ultimately broke the deadlock.\n\nThe decisive moment came in the 78th minute when Bukayo Saka delivered a pinpoint cross into the box, allowing Gabriel Jesus to header the ball past the keeper. Chelsea fought valiantly for an equalizer, hitting the woodwork in stoppage time, but Arsenal's defense held firm until the final whistle.\n\nThis victory propels Arsenal to the second spot in the table, putting intense pressure on the league leaders. Chelsea will look to regroup ahead of their midweek fixture to keep their European qualification hopes alive.",
+      "published": "2026-10-03T10:45:00Z",
       "images": [
         {
           "url": "https://a.espncdn.com/combiner/i?img=/photo/2024/0115/r1278149_1296x729_16-9.jpg&w=640"
         }
       ],
       "categories": [
-        { "description": "NFL" }
+        { "description": "Premier League" }
       ],
-      "source": { "name": "ESPN" },
+      "source": { "name": "SportSphere News" },
+      "author": "Marcus Vance",
+      "readTime": 4,
       "links": {
-        "web": { "href": "https://www.espn.com/nfl/story" }
+        "web": { "href": "https://sportsphere.example/news/arsenal-london-derby" }
       }
     }
   ]

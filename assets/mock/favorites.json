@@ -1,0 +1,32 @@
+{
+  "teams": [
+    {
+      "id": "359",
+      "name": "Arsenal",
+      "abbreviation": "ARS",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/soccer/500/359.png",
+      "league": "soccer/eng.1"
+    },
+    {
+      "id": "363",
+      "name": "Chelsea",
+      "abbreviation": "CHE",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/soccer/500/363.png",
+      "league": "soccer/eng.1"
+    },
+    {
+      "id": "13",
+      "name": "Los Angeles Lakers",
+      "abbreviation": "LAL",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/lal.png",
+      "league": "basketball/nba"
+    },
+    {
+      "id": "2",
+      "name": "Boston Celtics",
+      "abbreviation": "BOS",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/bos.png",
+      "league": "basketball/nba"
+    }
+  ]
+}
