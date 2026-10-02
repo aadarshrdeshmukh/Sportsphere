@@ -26,7 +26,8 @@ class ApiService {
 
   Future<Map<String, dynamic>> _get(String path,
       {Map<String, String>? queryParams, String? token}) async {
-    final uri = Uri.parse('$baseUrl$path').replace(queryParameters: queryParams);
+    final uri =
+        Uri.parse('$baseUrl$path').replace(queryParameters: queryParams);
     final headers = <String, String>{'Accept': 'application/json'};
     if (token != null && token.isNotEmpty) {
       headers['Authorization'] = 'Bearer $token';
@@ -42,7 +43,8 @@ class ApiService {
   }
 
   /// Fetches scoreboard from Express backend.
-  Future<List<SportMatch>> matches(SportLeague? league, {DateTime? date}) async {
+  Future<List<SportMatch>> matches(SportLeague? league,
+      {DateTime? date}) async {
     final query = <String, String>{'league': league?.key ?? 'all'};
     if (date != null) {
       final y = date.year.toString().padLeft(4, '0');
@@ -67,7 +69,8 @@ class ApiService {
   }
 
   /// Fetches news articles from Express backend.
-  Future<List<NewsArticle>> news(SportLeague? league, {String? category}) async {
+  Future<List<NewsArticle>> news(SportLeague? league,
+      {String? category}) async {
     final query = <String, String>{'league': league?.key ?? 'all'};
     if (category != null && category != 'All') {
       query['category'] = category;
@@ -78,13 +81,14 @@ class ApiService {
             (result['data'] is List ? result['data'] : null)) as List? ??
         [];
     return articles
-      .map((x) => NewsArticle.fromEspn((x as Map).cast<String, dynamic>(),
-        category: league?.label ?? 'Sports'))
+        .map((x) => NewsArticle.fromEspn((x as Map).cast<String, dynamic>(),
+            category: league?.label ?? 'Sports'))
         .toList();
   }
 
   /// Fetches match summary and timeline events from Express backend.
-  Future<Map<String, dynamic>> summary(SportLeague league, String eventId) async {
+  Future<Map<String, dynamic>> summary(
+      SportLeague league, String eventId) async {
     final cleanLeague = league.key.replaceAll('/', '-');
     final result = await _get('/matches/$cleanLeague/$eventId/summary');
     return (result['summary'] as Map?)?.cast<String, dynamic>() ?? {};

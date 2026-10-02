@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sportsphere/models/news_article.dart';
 import 'package:sportsphere/models/sport_league.dart';
@@ -11,6 +12,7 @@ import 'package:sportsphere/screens/league_filter_sheet.dart';
 import 'package:sportsphere/screens/match_detail_screen.dart';
 import 'package:sportsphere/screens/team_detail_screen.dart' as screen;
 import 'package:sportsphere/services/firestore_service.dart';
+import 'package:sportsphere/services/api_service.dart';
 import 'package:sportsphere/state/auth_controller.dart';
 import 'package:sportsphere/state/favorites_controller.dart';
 import 'package:sportsphere/state/live_scores_controller.dart';
@@ -96,6 +98,13 @@ class _MockFirestoreService extends FirestoreService {
     for (final team in localTeams) {
       userMap[team.id] = team;
     }
+  }
+}
+
+class _UnavailableClient extends http.BaseClient {
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    throw http.ClientException('backend unavailable');
   }
 }
 
@@ -214,12 +223,14 @@ void main() {
             category: 'Basketball'),
       ]));
       await controller.refresh();
-      expect(controller.categories, containsAll(['All', 'Football', 'Basketball']));
+      expect(controller.categories,
+          containsAll(['All', 'Football', 'Basketball']));
       controller.selectCategory('Football');
       expect(controller.filteredArticles.single.title, 'Football news');
     });
 
-    test('FavoritesController persists, loads and syncs with Firestore', () async {
+    test('FavoritesController persists, loads and syncs with Firestore',
+        () async {
       SharedPreferences.setMockInitialValues({});
       final firestore = _MockFirestoreService();
       final first = FavoritesController(firestoreService: firestore);
@@ -301,6 +312,26 @@ void main() {
       final teams = await repo.popularTeams();
       expect(teams.single.name, 'Arsenal');
     });
+
+    test(
+        'SportsRepository uses exact bundled mock data when API is unavailable',
+        () async {
+      SharedPreferences.setMockInitialValues({});
+      final repo = SportsRepository(
+        api: ApiService(client: _UnavailableClient()),
+      );
+
+      final scores = await repo.allMatches();
+      final news = await repo.allNews();
+
+      expect(scores.fromCache, isTrue);
+      expect(scores.error, contains('saved/mock data'));
+      expect(scores.data.first.id, 'match-live-1');
+      expect(scores.data.first.home.name, 'Arsenal');
+      expect(news.data.first.id, 'espn-news-1');
+      expect(news.data.first.title,
+          'Arsenal secure crucial derby victory as title race intensifies');
+    });
   });
 
   group('UI Widgets & Screen tests', () {
@@ -315,7 +346,8 @@ void main() {
               settings: settings,
               builder: (_) => Match(
                 repository: _MockRepository(),
-                favorites: FavoritesController(firestoreService: _MockFirestoreService()),
+                favorites: FavoritesController(
+                    firestoreService: _MockFirestoreService()),
               ),
             );
           }
@@ -343,7 +375,8 @@ void main() {
         (tester) async {
       SharedPreferences.setMockInitialValues({});
       const team = Team(id: 'ars', name: 'Arsenal', abbreviation: 'ARS');
-      final favorites = FavoritesController(firestoreService: _MockFirestoreService());
+      final favorites =
+          FavoritesController(firestoreService: _MockFirestoreService());
       final repo = _MockRepository(sampleMatches: [SportMatch.fromEspn(event)]);
 
       await tester.pumpWidget(MaterialApp(
@@ -351,7 +384,8 @@ void main() {
           if (settings.name == '/team') {
             return MaterialPageRoute(
               settings: settings,
-              builder: (_) => screen.Team(repository: repo, favorites: favorites),
+              builder: (_) =>
+                  screen.Team(repository: repo, favorites: favorites),
             );
           }
           return null;
@@ -410,7 +444,8 @@ void main() {
     testWidgets('AuthScreen and AccountSheet render properly', (tester) async {
       SharedPreferences.setMockInitialValues({});
       final auth = AuthController();
-      final favorites = FavoritesController(firestoreService: _MockFirestoreService());
+      final favorites =
+          FavoritesController(firestoreService: _MockFirestoreService());
 
       await tester.pumpWidget(MaterialApp(
         home: AuthScreen(auth: auth),

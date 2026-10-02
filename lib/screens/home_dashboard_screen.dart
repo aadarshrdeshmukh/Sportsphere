@@ -172,11 +172,14 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   // ── 1. Greeting Card ──
   Widget _greetingCard(ColorScheme colorScheme, bool isDark) {
-    final userName = widget.auth?.user?.displayName?.split(' ').first;
-    final displayName =
-        (userName != null && userName.isNotEmpty) ? userName : 'Alex';
-    final initialLetter =
-        displayName.isNotEmpty ? displayName[0].toUpperCase() : 'A';
+    final userName = widget.auth?.user?.displayName?.trim();
+    final displayName = userName?.isNotEmpty == true
+        ? userName!.split(RegExp(r'\s+')).first
+        : null;
+    final initialLetter = displayName?.substring(0, 1).toUpperCase();
+    final greeting = displayName == null
+        ? _greetingTime()
+        : '${_greetingTime()}, $displayName';
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
@@ -202,7 +205,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${_greetingTime()}, $displayName',
+                  greeting,
                   style: TextStyle(
                     fontSize: 21,
                     fontWeight: FontWeight.w800,
@@ -233,14 +236,16 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
-            child: Text(
-              initialLetter,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 19,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
+            child: initialLetter == null
+                ? null
+                : Text(
+                    initialLetter,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
           ),
         ],
       ),
@@ -606,7 +611,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           )
         else
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: displayTeams.take(4).map((data) {
               final name = data.$1;
               final borderColor = data.$2;
@@ -614,82 +618,87 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               final teamId = data.$4;
               final league = data.$5;
 
-              return InkWell(
-                onTap: () {
-                  final team = Team(
-                    id: teamId,
-                    name: name,
-                    abbreviation: name.length > 3
-                        ? name.substring(0, 3).toUpperCase()
-                        : name.toUpperCase(),
-                    logoUrl: logoUrl,
-                    league: league,
-                  );
-                  Navigator.pushNamed(context, '/team', arguments: team);
-                },
-                borderRadius: BorderRadius.circular(35),
-                child: Column(
-                  children: [
-                    Container(
-                      width: 62,
-                      height: 62,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: name == 'Lakers'
-                            ? const Color(0xFF3B0764)
-                            : (isDark ? colorScheme.surface : Colors.white),
-                        border: Border.all(
-                          color: borderColor,
-                          width: 2,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: borderColor.withValues(alpha: 0.12),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
+              return Expanded(
+                child: InkWell(
+                  onTap: () {
+                    final team = Team(
+                      id: teamId,
+                      name: name,
+                      abbreviation: name.length > 3
+                          ? name.substring(0, 3).toUpperCase()
+                          : name.toUpperCase(),
+                      logoUrl: logoUrl,
+                      league: league,
+                    );
+                    Navigator.pushNamed(context, '/team', arguments: team);
+                  },
+                  borderRadius: BorderRadius.circular(35),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 62,
+                        height: 62,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: name == 'Lakers'
+                              ? const Color(0xFF3B0764)
+                              : (isDark ? colorScheme.surface : Colors.white),
+                          border: Border.all(
+                            color: borderColor,
+                            width: 2,
                           ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(8),
-                      child: ClipOval(
-                        child: logoUrl.isNotEmpty
-                            ? Image.network(
-                                logoUrl,
-                                fit: BoxFit.contain,
-                                errorBuilder: (_, __, ___) => Center(
-                                  child: Icon(
-                                    name == 'Lakers'
-                                        ? Icons.sports_basketball
-                                        : Icons.sports_soccer,
-                                    size: 26,
-                                    color: name == 'Lakers'
-                                        ? const Color(0xFFF59E0B)
-                                        : borderColor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: borderColor.withValues(alpha: 0.12),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: ClipOval(
+                          child: logoUrl.isNotEmpty
+                              ? Image.network(
+                                  logoUrl,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (_, __, ___) => Center(
+                                    child: Icon(
+                                      name == 'Lakers'
+                                          ? Icons.sports_basketball
+                                          : Icons.sports_soccer,
+                                      size: 26,
+                                      color: name == 'Lakers'
+                                          ? const Color(0xFFF59E0B)
+                                          : borderColor,
+                                    ),
+                                  ),
+                                )
+                              : Center(
+                                  child: Text(
+                                    name.isNotEmpty ? name[0] : '?',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: borderColor,
+                                    ),
                                   ),
                                 ),
-                              )
-                            : Center(
-                                child: Text(
-                                  name.isNotEmpty ? name[0] : '?',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: borderColor,
-                                  ),
-                                ),
-                              ),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      name,
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w700,
-                        color: isDark ? Colors.white : const Color(0xFF111827),
+                      const SizedBox(height: 8),
+                      Text(
+                        name,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w700,
+                          color:
+                              isDark ? Colors.white : const Color(0xFF111827),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }).toList(),

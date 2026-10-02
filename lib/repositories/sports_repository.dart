@@ -38,21 +38,11 @@ class SportsRepository {
         await _cache.writeJson(key, {'events': data.map(_matchJson).toList()});
       }
       return DataResult(data);
-    } catch (_) {
-      // 2. Direct live fallback
-      try {
-        final directData =
-            _filterForDate(await _espn.scoreboard(league, date: date), date);
-        if (directData.isNotEmpty) {
-          await _cache
-              .writeJson(key, {'events': directData.map(_matchJson).toList()});
-        }
-        return DataResult(directData);
-      } catch (_) {}
-    }
+    } catch (_) {}
 
     return DataResult(
-      await _readMatches(key, league: league),
+      _filterForDate(
+          await _readMatches(key, league: league, useCache: false), date),
       fromCache: true,
       error: 'Sports server unavailable; showing saved/mock data.',
     );
@@ -64,22 +54,11 @@ class SportsRepository {
     try {
       final data = _filterForDate(await _api.matches(null, date: date), date);
       return DataResult(data);
-    } catch (_) {
-      // 2. Direct live fallback across leagues
-      try {
-        final results = await Future.wait(
-            supportedLeagues.map((l) => _espn.scoreboard(l, date: date)));
-        final all =
-            _filterForDate(results.expand((list) => list).toList(), date)
-              ..sort((a, b) => a.startTime.compareTo(b.startTime));
-        if (all.isNotEmpty) {
-          return DataResult(all);
-        }
-      } catch (_) {}
-    }
+    } catch (_) {}
 
     return DataResult(
-      await _readMatches('scoreboard_all'),
+      _filterForDate(
+          await _readMatches('scoreboard_all', useCache: false), date),
       fromCache: true,
       error: 'Sports server unavailable; showing saved/mock data.',
     );
@@ -117,19 +96,10 @@ class SportsRepository {
         await _cacheNews(key, data);
       }
       return DataResult(data);
-    } catch (_) {
-      // 2. Direct live fallback
-      try {
-        final direct = await _espn.news(league);
-        if (direct.isNotEmpty) {
-          await _cacheNews(key, direct);
-          return DataResult(direct);
-        }
-      } catch (_) {}
-    }
+    } catch (_) {}
 
     return DataResult(
-      await _readNews(key),
+      await _readNews(key, useCache: false),
       fromCache: true,
       error: 'Sports server unavailable; showing saved/mock data.',
     );
@@ -144,19 +114,10 @@ class SportsRepository {
         await _cacheNews('news_all', data);
       }
       return DataResult(data);
-    } catch (_) {
-      // 2. Direct live fallback
-      try {
-        final direct = await _espn.bbcNews();
-        if (direct.isNotEmpty) {
-          await _cacheNews('news_all', direct);
-          return DataResult(direct);
-        }
-      } catch (_) {}
-    }
+    } catch (_) {}
 
     return DataResult(
-      await _readNews('news_all'),
+      await _readNews('news_all', useCache: false),
       fromCache: true,
       error: 'Sports server unavailable; showing saved/mock data.',
     );
@@ -267,16 +228,19 @@ class SportsRepository {
     return results;
   }
 
-  Future<List<NewsArticle>> _readNews(String key) async {
-    final raw = await _readJson(key, 'assets/mock/news.json');
+  Future<List<NewsArticle>> _readNews(String key,
+      {bool useCache = true}) async {
+    final raw =
+        await _readJson(key, 'assets/mock/news.json', useCache: useCache);
     return (raw['articles'] as List? ?? [])
         .map((x) => NewsArticle.fromEspn((x as Map).cast<String, dynamic>()))
         .toList();
   }
 
   Future<List<SportMatch>> _readMatches(String key,
-      {SportLeague? league}) async {
-    final raw = await _readJson(key, 'assets/mock/scoreboard.json');
+      {SportLeague? league, bool useCache = true}) async {
+    final raw =
+        await _readJson(key, 'assets/mock/scoreboard.json', useCache: useCache);
     final events = (raw['events'] as List? ?? []);
     final now = DateTime.now();
     return events
@@ -294,8 +258,9 @@ class SportsRepository {
         .toList();
   }
 
-  Future<Map<String, dynamic>> _readJson(String key, String asset) async {
-    final cached = await _cache.read(key);
+  Future<Map<String, dynamic>> _readJson(String key, String asset,
+      {bool useCache = true}) async {
+    final cached = useCache ? await _cache.read(key) : null;
     final text = cached ?? await rootBundle.loadString(asset);
     return jsonDecode(text) as Map<String, dynamic>;
   }

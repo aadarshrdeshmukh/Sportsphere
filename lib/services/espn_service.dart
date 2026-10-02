@@ -33,10 +33,10 @@ class EspnService {
   Future<List<NewsArticle>> news(SportLeague league) async {
     final data = await _get('${league.key}/news');
     return (data['articles'] as List? ?? [])
-      .map((e) => NewsArticle.fromEspn(
-            (e as Map).cast<String, dynamic>(),
-            category: league.label,
-          ))
+        .map((e) => NewsArticle.fromEspn(
+              (e as Map).cast<String, dynamic>(),
+              category: league.label,
+            ))
         .toList();
   }
 
@@ -100,7 +100,12 @@ class EspnService {
   /// Fetches teams from all supported league scoreboards and league team rosters.
   Future<List<Map<String, dynamic>>> teamsFromScoreboards() async {
     final teams = <String, Map<String, dynamic>>{};
-    for (final league in ['soccer/eng.1', 'soccer/uefa.champions', 'basketball/nba', 'football/nfl']) {
+    for (final league in [
+      'soccer/eng.1',
+      'soccer/uefa.champions',
+      'basketball/nba',
+      'football/nfl'
+    ]) {
       try {
         final data = await _get('$league/scoreboard');
         for (final event in (data['events'] as List? ?? [])) {
@@ -147,8 +152,10 @@ class EspnService {
   Future<List<Map<String, dynamic>>> searchGlobalTeams(String query) async {
     if (query.trim().isEmpty) return [];
     try {
-      final response = await _client.get(Uri.parse(
-          'https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${Uri.encodeComponent(query.trim())}')).timeout(const Duration(seconds: 4));
+      final response = await _client
+          .get(Uri.parse(
+              'https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=${Uri.encodeComponent(query.trim())}'))
+          .timeout(const Duration(seconds: 4));
       if (response.statusCode != 200) return [];
       final json = jsonDecode(response.body) as Map<String, dynamic>;
       final teams = json['teams'] as List?;
@@ -159,4 +166,3 @@ class EspnService {
     }
   }
 }
-

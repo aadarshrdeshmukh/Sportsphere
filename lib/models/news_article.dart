@@ -13,7 +13,7 @@ class NewsArticle {
   final String? imageUrl;
   final String? url;
 
-    factory NewsArticle.fromEspn(Map<String, dynamic> json, {String? category}) {
+  factory NewsArticle.fromEspn(Map<String, dynamic> json, {String? category}) {
     final images = json['images'] as List?;
     return NewsArticle(
         id: '${json['id'] ?? json['link'] ?? json['headline']}',

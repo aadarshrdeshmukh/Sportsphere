@@ -46,22 +46,14 @@ class _AuthScreenState extends State<AuthScreen> {
         : await widget.auth.signInWithEmail(email, password);
 
     if (success && mounted) {
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context, true);
-      } else {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     }
   }
 
   Future<void> _continueWithGoogle() async {
     final success = await widget.auth.signInWithGoogle();
     if (success && mounted) {
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context, true);
-      } else {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
     }
   }
 
@@ -164,12 +156,15 @@ class _AuthScreenState extends State<AuthScreen> {
                               duration: const Duration(milliseconds: 150),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: !_isSignUp ? Colors.white : Colors.transparent,
+                                color: !_isSignUp
+                                    ? Colors.white
+                                    : Colors.transparent,
                                 borderRadius: BorderRadius.circular(9),
                                 boxShadow: !_isSignUp
                                     ? [
                                         BoxShadow(
-                                          color: Colors.black.withValues(alpha: 0.08),
+                                          color: Colors.black
+                                              .withValues(alpha: 0.08),
                                           blurRadius: 4,
                                           offset: const Offset(0, 1),
                                         )
@@ -180,8 +175,12 @@ class _AuthScreenState extends State<AuthScreen> {
                                 'Sign In',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: !_isSignUp ? FontWeight.w700 : FontWeight.w500,
-                                  color: !_isSignUp ? AppTheme.text : const Color(0xFF6B7280),
+                                  fontWeight: !_isSignUp
+                                      ? FontWeight.w700
+                                      : FontWeight.w500,
+                                  color: !_isSignUp
+                                      ? AppTheme.text
+                                      : const Color(0xFF6B7280),
                                 ),
                               ),
                             ),
@@ -197,12 +196,15 @@ class _AuthScreenState extends State<AuthScreen> {
                               duration: const Duration(milliseconds: 150),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: _isSignUp ? Colors.white : Colors.transparent,
+                                color: _isSignUp
+                                    ? Colors.white
+                                    : Colors.transparent,
                                 borderRadius: BorderRadius.circular(9),
                                 boxShadow: _isSignUp
                                     ? [
                                         BoxShadow(
-                                          color: Colors.black.withValues(alpha: 0.08),
+                                          color: Colors.black
+                                              .withValues(alpha: 0.08),
                                           blurRadius: 4,
                                           offset: const Offset(0, 1),
                                         )
@@ -213,8 +215,12 @@ class _AuthScreenState extends State<AuthScreen> {
                                 'Sign Up',
                                 style: TextStyle(
                                   fontSize: 14,
-                                  fontWeight: _isSignUp ? FontWeight.w700 : FontWeight.w500,
-                                  color: _isSignUp ? AppTheme.text : const Color(0xFF6B7280),
+                                  fontWeight: _isSignUp
+                                      ? FontWeight.w700
+                                      : FontWeight.w500,
+                                  color: _isSignUp
+                                      ? AppTheme.text
+                                      : const Color(0xFF6B7280),
                                 ),
                               ),
                             ),
@@ -228,11 +234,13 @@ class _AuthScreenState extends State<AuthScreen> {
                   // Error Banner
                   if (widget.auth.error != null) ...[
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 10),
                       decoration: BoxDecoration(
                         color: AppTheme.live.withValues(alpha: 0.08),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppTheme.live.withValues(alpha: 0.25)),
+                        border: Border.all(
+                            color: AppTheme.live.withValues(alpha: 0.25)),
                       ),
                       child: Row(
                         children: [
@@ -259,10 +267,12 @@ class _AuthScreenState extends State<AuthScreen> {
                   SizedBox(
                     height: 50,
                     child: OutlinedButton(
-                      onPressed: widget.auth.isLoading ? null : _continueWithGoogle,
+                      onPressed:
+                          widget.auth.isLoading ? null : _continueWithGoogle,
                       style: OutlinedButton.styleFrom(
                         backgroundColor: Colors.white,
-                        side: const BorderSide(color: Color(0xFFD1D5DB), width: 1.2),
+                        side: const BorderSide(
+                            color: Color(0xFFD1D5DB), width: 1.2),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -278,7 +288,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            _isSignUp ? 'Sign up with Google' : 'Sign in with Google',
+                            _isSignUp
+                                ? 'Sign up with Google'
+                                : 'Sign in with Google',
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w700,
@@ -354,11 +366,13 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xFFD1D5DB)),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Color(0xFFD1D5DB)),
+                          borderSide:
+                              const BorderSide(color: Color(0xFFD1D5DB)),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -476,14 +490,12 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword
-                              ? Iconsax.eye_slash
-                              : Iconsax.eye,
+                          _obscurePassword ? Iconsax.eye_slash : Iconsax.eye,
                           size: 20,
                           color: const Color(0xFF4B5563),
                         ),
-                        onPressed: () =>
-                            setState(() => _obscurePassword = !_obscurePassword),
+                        onPressed: () => setState(
+                            () => _obscurePassword = !_obscurePassword),
                       ),
                       filled: true,
                       fillColor: const Color(0xFFF9FAFB),

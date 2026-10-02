@@ -1,107 +1,81 @@
-# ⚽ SportSphere — Real-Time Sports & Live Scores Platform
+# SportSphere
 
-**SportSphere** is a cross-platform live sports tracking application built with **Flutter**, backed by a high-performance **Express.js (Node.js)** API gateway and **Firebase** (Authentication & Cloud Firestore).
+SportSphere is a cross-platform Flutter sports app for browsing scores, schedules, news, match details, teams, and favorites. It uses an Express.js API gateway for aggregated sports data and Firebase Authentication/Cloud Firestore for account and favorite-team synchronization.
 
----
+## Features
 
-## 🌟 Key Features
+- Live scores for the Premier League, UEFA Champions League, NBA, and NFL.
+- 45-second live-score polling with pause/resume when the app is backgrounded.
+- Schedule browsing with date selection and league filtering.
+- Sports news with league/category filters, article details, and BBC Sport RSS fallback.
+- Match summaries, timelines, team details, fixtures, and team-logo fallbacks.
+- Local favorite-team storage with optional Firestore synchronization for signed-in users.
+- Email/password authentication, anonymous guest access, and account management.
+- Light, dark, and system theme modes.
+- Offline-friendly repository fallback to cached or bundled mock data.
 
-- **⚡ Real-Time Live Scores**: Live score tracking across **Premier League (EPL)**, **UEFA Champions League**, **NBA**, and **NFL** with 45-second polling and automatic lifecycle-aware pause/resume when backgrounded.
-- **📅 Dynamic Schedule**: 7-day horizontal date selector (−2 to +4 days) with league filters and full match metadata.
-- **📰 Curated Sports News**: ESPN news aggregator with dynamic category chips, full article details, and automated **BBC Sport RSS** fallback.
-- **🔍 Match & Team Details**: Real-time match timelines, scoring summaries, key event clocks, team fixtures, and **TheSportsDB** badge fallback.
-- **❤️ Favorites & Cloud Sync**: Follow teams during onboarding or from match cards. Favorites synchronize in real-time across devices using **Cloud Firestore**.
-- **🔐 Firebase Authentication**: Complete email/password sign-in, registration, and guest mode with account management bottom sheet.
-- **🚀 Server-Side TTL Caching**: Express backend caches upstream API calls in-memory (20s–15m TTL), cutting external rate limits and response payloads by up to 90%.
-- **📱 Material 3 Design**: Clean Figma design tokens (`#0B6E4F` Primary, `#FF6B35` Secondary, `#D32F2F` Live indicator) with smooth `IndexedStack` tab persistence.
-
----
-
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 flowchart TD
-    subgraph Client ["Flutter Mobile / Web / Desktop"]
-        UI["Flutter UI (Material 3)"]
-        Controllers["ChangeNotifier Controllers\n(Sports, LiveScores, News, Favorites, Auth)"]
-        Repo["SportsRepository\n(Multi-tier Fallback Chain)"]
-        Cache["SharedPreferences Cache"]
-    end
+    UI[Flutter screens and widgets]
+    State[ChangeNotifier controllers]
+    Repo[SportsRepository]
+    API[Express API gateway]
+    ESPN[ESPN public API]
+    BBC[BBC Sport RSS]
+    Cache[SharedPreferences cache]
+    Firebase[Firebase Auth and Firestore]
 
-    subgraph Backend ["Express.js API Gateway (/server)"]
-        Express["Express Server (Port 3000)"]
-        TTLCache["NodeCache TTL Layer\n(20s live, 60s scores, 15m news)"]
-        AuthMiddleware["Firebase Auth Bearer Token Middleware"]
-        Aggregator["Sports Aggregators (ESPN, BBC, TheSportsDB)"]
-    end
-
-    subgraph CloudServices ["Cloud & Upstream Providers"]
-        ESPN["ESPN Public API"]
-        BBC["BBC Sport RSS"]
-        TSDB["TheSportsDB API"]
-        Firebase["Firebase Auth & Cloud Firestore\n(Project: sportsphere-45964)"]
-    end
-
-    UI --> Controllers
-    Controllers --> Repo
-    Repo -->|1. Try Express API| Express
-    Repo -.->|2. Fallback Direct| ESPN
-    Repo -.->|3. Offline Fallback| Cache
-
-    Express --> TTLCache
-    Express --> AuthMiddleware
-    AuthMiddleware --> Firebase
-    TTLCache -->|Cache Miss| Aggregator
-    Aggregator --> ESPN
-    Aggregator -.->|Fallback| BBC
-    Aggregator -.->|Logo Fallback| TSDB
+    UI --> State
+    State --> Repo
+    Repo -->|primary| API
+    Repo -->|direct fallback| ESPN
+    Repo -->|offline fallback| Cache
+    API --> ESPN
+    API -->|news fallback| BBC
+    API --> Firebase
+    State --> Firebase
 ```
 
----
+The Flutter repository tries the local Express API first, then direct ESPN requests, and finally local cached/mock data. The backend adds upstream aggregation, CORS/security middleware, and in-memory TTL caching. Firebase is used for authentication and favorites; public score and news endpoints do not require a user token.
 
-## 📂 Project Structure
+## Project Structure
 
-```
-sportsphere_flutter_complete/
-├── server/                            # Node.js / Express.js Backend
-│   ├── src/
-│   │   ├── config/                    # Environment & Firebase Admin config
-│   │   ├── controllers/               # Route handlers (scores, news, matches, teams, favorites)
-│   │   ├── middleware/                # Auth token verification & global error handling
-│   │   ├── routes/                    # Express route definitions (/api/v1/*)
-│   │   ├── services/                  # ESPN API, BBC RSS, TheSportsDB, and NodeCache
-│   │   ├── app.js                     # Express app setup & middleware
-│   │   └── server.js                  # Server entry point
-│   ├── test/                          # Automated Node.js API tests
-│   ├── package.json                   # "type": "module" (ES Modules)
-│   └── .env                           # Server environment variables
-├── lib/                               # Flutter Frontend App
-│   ├── models/                        # Data models (SportMatch, Team, NewsArticle, SportLeague)
-│   ├── repositories/                  # SportsRepository with fallback chains
-│   ├── screens/                       # UI screens (Home, Schedule, LiveScores, News, Favorites, MatchDetail, TeamDetail, Auth, Splash, Onboarding)
-│   ├── services/                      # ApiService, EspnService, CacheService, FirestoreService
-│   ├── state/                         # State controllers (SportsController, LiveScoresController, NewsController, FavoritesController, AuthController)
-│   ├── theme/                         # Material 3 theme & Figma design tokens
-│   ├── widgets/                       # Reusable UI components (MatchCard, NewsCard, TeamBadge, StatusBadge, FilterChipRow, AccountSheet)
-│   ├── firebase_options.dart          # Generated Firebase configuration
-│   └── main.dart                      # App entry point with _HomeShell (IndexedStack)
-├── test/                              # Flutter unit and widget tests
-└── pubspec.yaml                       # Flutter dependencies
+```text
+lib/
+  models/          Domain models for matches, leagues, teams, and articles
+  repositories/    Data access and fallback orchestration
+  screens/         Splash, onboarding, home, schedule, live, news, details, and settings
+  services/        Express API, ESPN, cache, and Firestore integrations
+  state/           ChangeNotifier controllers for app state
+  theme/           Material 3 themes and design tokens
+  widgets/         Shared navigation and UI components
+  main.dart        Firebase initialization and application routing
+server/
+  src/app.js       Express middleware and route registration
+  src/server.js    Development/production server entrypoint
+  src/config/      Environment and Firebase Admin configuration
+  src/controllers/ API request handlers
+  src/middleware/  Authentication and error middleware
+  src/routes/      Versioned API routes
+  src/services/    ESPN, BBC, TheSportsDB, and cache integrations
+  test/            Node.js API tests
+test/              Flutter unit and widget tests
+assets/            Mock JSON, images, and SVG assets
 ```
 
----
+## Requirements
 
-## 🚀 Getting Started
+- Flutter SDK with Dart `>=3.3.0 <4.0.0`.
+- Node.js 18 or newer and npm.
+- A configured Firebase project for email authentication and cloud favorites. The checked-in `lib/firebase_options.dart` contains the client configuration used by Flutter.
 
-### Prerequisites
-- **Flutter SDK**: `>=3.3.0 <4.0.0`
-- **Node.js**: `>=18.0.0` and **npm**
+## Getting Started
 
----
+### Start the backend
 
-### 1. Start the Express Backend
-
-In a terminal, run:
+From the repository root:
 
 ```bash
 cd server
@@ -109,72 +83,79 @@ npm install
 npm run dev
 ```
 
-The server will start on `http://localhost:3000`:
-- **API Base**: `http://localhost:3000/api/v1`
-- **Health Check**: `http://localhost:3000/api/v1/health`
+The API listens on `http://localhost:3000` by default. Use `npm start` for a normal Node.js process. The health endpoint is:
 
----
+```text
+http://localhost:3000/api/v1/health
+```
 
-### 2. Start the Flutter App
+The backend reads an optional `server/.env` file. Supported values include:
 
-In a separate terminal, run:
+```env
+PORT=3000
+NODE_ENV=development
+FIREBASE_PROJECT_ID=sportsphere-45964
+CORS_ORIGIN=*
+API_SPORTS_KEY=optional_api_sports_key
+```
+
+`API_SPORTS_KEY` is optional and must remain server-side. The backend falls back to ESPN when API-Sports is not configured or a request fails. Do not commit `server/.env` or credentials.
+
+### Run the Flutter app
+
+From the repository root, in a second terminal:
 
 ```bash
-# Get Flutter packages
 flutter pub get
-
-# Run on macOS / Chrome / iOS Simulator / Android Emulator
 flutter run
 ```
 
-> **Note for Android Emulator**: The Flutter `ApiService` automatically detects Android and connects to `http://10.0.2.2:3000/api/v1`. On macOS, iOS, and Web, it connects to `http://localhost:3000/api/v1`.
+The default API URL is selected by platform:
 
----
+| Platform | API URL |
+| --- | --- |
+| Web, macOS, iOS, and other desktop platforms | `http://localhost:3000/api/v1` |
+| Android emulator | `http://10.0.2.2:3000/api/v1` |
 
-## 📡 REST API Endpoints
+Start the backend before launching the app if you want live server data. If the backend or upstream providers are unavailable, the repository uses direct ESPN access and then saved/mock data where available.
 
-| Method | Endpoint | Description | Auth Required | Cache TTL |
-|--------|----------|-------------|---------------|-----------|
-| `GET` | `/api/v1/health` | Service health status | No | None |
-| `GET` | `/api/v1/scores?league=soccer/eng.1` | League scoreboard & schedule | No | 60s / 10m |
-| `GET` | `/api/v1/scores/live` | Active live matches across leagues | No | 20s |
-| `GET` | `/api/v1/news?league=soccer/eng.1` | Sports news with BBC fallback | No | 15m |
-| `GET` | `/api/v1/matches/:league/:eventId/summary` | Match summary & timeline events | No | 30s |
-| `GET` | `/api/v1/teams/popular` | Popular teams catalog with logos | No | 1 hour |
-| `GET` | `/api/v1/teams/:teamId/matches` | Team fixtures & results | No | 2m |
-| `GET` | `/api/v1/favorites` | Get user's cloud favorites | Yes (Bearer Token) | None |
-| `POST` | `/api/v1/favorites` | Save/update favorite team | Yes (Bearer Token) | None |
-| `DELETE` | `/api/v1/favorites/:teamId` | Remove favorite team | Yes (Bearer Token) | None |
+## API
 
----
+All routes are prefixed with `/api/v1`.
 
-## 🧪 Running Automated Tests
+| Method | Endpoint | Purpose | Auth |
+| --- | --- | --- | --- |
+| GET | `/health` | Service health | None |
+| GET | `/scores?league=soccer/eng.1` | League scoreboard or schedule | None |
+| GET | `/scores/live` | Live matches across supported leagues | None |
+| GET | `/news?league=soccer/eng.1` | News feed with fallback aggregation | None |
+| GET | `/matches/:league/:eventId/summary` | Match summary and timeline | None |
+| GET | `/teams/popular` | Popular teams catalog | None |
+| GET | `/teams/:teamId/matches` | Team fixtures and results | None |
+| GET | `/favorites` | Read a user's cloud favorites | Firebase Bearer token |
+| POST | `/favorites` | Save or update a favorite team | Firebase Bearer token |
+| DELETE | `/favorites/:teamId` | Remove a favorite team | Firebase Bearer token |
 
-### Flutter Tests & Static Analysis
+League keys are `soccer/eng.1`, `soccer/uefa.champions`, `basketball/nba`, and `football/nfl`. The API also accepts the football shorthand `eng.1` and normalizes it to `soccer/eng.1`.
+
+## Testing and Analysis
+
 ```bash
-# Static analysis (0 warnings, 0 errors)
+# Flutter static analysis and tests
 flutter analyze
-
-# Run Flutter test suite (13 passing test suites)
 flutter test
-```
 
-### Express Backend Tests
-```bash
+# Backend API tests
 cd server
 npm test
 ```
 
----
+The backend tests start the Express app on an ephemeral port and cover health, scores, live scores, news, shorthand league handling, and unauthorized favorites access. Flutter tests cover model parsing, controller behavior, persistence/synchronization, and splash-screen launch behavior.
 
-## 🎨 Figma Design Tokens
+## CI Builds
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| Primary | `#0B6E4F` | Main brand green, active chips, primary buttons |
-| Pale Green | `#E8F5E9` | Badges, card backgrounds, avatars |
-| Secondary | `#FF6B35` | Accents |
-| Live | `#D32F2F` | Live indicators, errors |
-| Background | `#F5F7F6` | Screen background |
-| Surface | `#FFFFFF` | Cards, app bars, sheets |
-| Outline | `#C4C9C6` | Borders, unselected states |
+The GitHub Actions workflow in `.github/workflows/build-mobile.yml` builds an Android release APK and an unsigned iOS release archive on pushes and pull requests. It uploads both artifacts for download from the workflow run.
+
+## Design
+
+The app uses Material 3 with a green primary palette, orange accents, red live-state indicators, responsive navigation, and persisted tab state through an `IndexedStack` home shell.
