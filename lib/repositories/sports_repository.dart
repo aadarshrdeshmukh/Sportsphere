@@ -150,6 +150,13 @@ class SportsRepository {
       final data = await _api.summary(league, eventId);
       if (data.isNotEmpty) return data;
     } catch (_) {}
+    try {
+      final raw =
+          await rootBundle.loadString('assets/mock/match_summaries.json');
+      final summaries = jsonDecode(raw) as Map<String, dynamic>;
+      final summary = summaries[eventId];
+      if (summary is Map) return summary.cast<String, dynamic>();
+    } catch (_) {}
     return {};
   }
 

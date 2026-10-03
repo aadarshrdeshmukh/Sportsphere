@@ -1,0 +1,52 @@
+{
+  "match-live-1": {
+    "header": {
+      "competitions": [
+        {
+          "details": [
+            {
+              "clock": { "displayValue": "23'" },
+              "text": "Goal - Saka (assist by Ødegaard)"
+            },
+            {
+              "clock": { "displayValue": "41'" },
+              "text": "Yellow card - Caicedo"
+            },
+            {
+              "clock": { "displayValue": "56'" },
+              "text": "Goal - Havertz (assist by Saka)"
+            },
+            {
+              "clock": { "displayValue": "64'" },
+              "text": "Goal - Palmer (penalty)"
+            }
+          ]
+        }
+      ]
+    },
+    "boxscore": {
+      "teams": [
+        {
+          "team": { "displayName": "Arsenal" },
+          "statistics": [
+            { "label": "Possession", "displayValue": "57%" },
+            { "label": "Shots", "displayValue": "12" },
+            { "label": "Shots on Target", "displayValue": "6" },
+            { "label": "Corners", "displayValue": "5" },
+            { "label": "Fouls", "displayValue": "8" }
+          ]
+        },
+        {
+          "team": { "displayName": "Chelsea" },
+          "statistics": [
+            { "label": "Possession", "displayValue": "43%" },
+            { "label": "Shots", "displayValue": "8" },
+            { "label": "Shots on Target", "displayValue": "3" },
+            { "label": "Corners", "displayValue": "2" },
+            { "label": "Fouls", "displayValue": "11" }
+          ]
+        }
+      ]
+    }
+  }
+}
