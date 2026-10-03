@@ -126,11 +126,20 @@ export class EspnService {
    */
   static async getSummary(league = 'soccer/eng.1', eventId) {
     const canonical = normalizeLeague(league);
-    const response = await axios.get(`${ESPN_BASE_URL}/${canonical}/summary`, {
-      params: { event: eventId },
-      timeout: 8000,
-    });
-    return response.data;
+    try {
+      const response = await axios.get(`${ESPN_BASE_URL}/${canonical}/summary`, {
+        params: { event: eventId },
+        timeout: 8000,
+      });
+      return response.data;
+    } catch (error) {
+      // ESPN removes summary records for older or unsupported events while
+      // the corresponding scoreboard event can still be available.
+      if (error.response?.status === 404) {
+        return {};
+      }
+      throw error;
+    }
   }
 
   /**
