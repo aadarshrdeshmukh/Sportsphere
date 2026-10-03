@@ -16,6 +16,10 @@ class SportsController extends ChangeNotifier {
   String? error;
   bool showingCachedData = false;
   Timer? _poller;
+
+  List<SportMatch> get upcomingMatches =>
+      matches.where((match) => !match.isLive && !match.isCompleted).toList();
+
   Future<void> refresh({DateTime? date}) async {
     if (date != null) selectedDate = _dateOnly(date);
     isLoading = true;

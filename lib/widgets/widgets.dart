@@ -1053,7 +1053,8 @@ class BottomNav extends StatelessWidget {
       (Iconsax.heart, Iconsax.heart_copy, 'Favorites'),
     ];
 
-    final unselectedColor = isDark ? const Color(0xFFD1D5DB) : const Color(0xFF9CA3AF);
+    final unselectedColor =
+        isDark ? const Color(0xFFD1D5DB) : const Color(0xFF9CA3AF);
     final selectedColor = isDark ? Colors.white : AppTheme.primary;
 
     return Container(
@@ -1069,18 +1070,14 @@ class BottomNav extends StatelessWidget {
       child: NavigationBarTheme(
         data: NavigationBarThemeData(
           backgroundColor: isDark ? colorScheme.surface : Colors.white,
-          indicatorColor: isDark
-              ? AppTheme.primary
-              : const Color(0xFFE8F5EE),
+          indicatorColor: isDark ? AppTheme.primary : const Color(0xFFE8F5EE),
           height: 66,
           labelTextStyle: WidgetStateProperty.resolveWith((states) {
             final isSelected = states.contains(WidgetState.selected);
             return TextStyle(
               fontSize: 11.5,
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-              color: isSelected
-                  ? selectedColor
-                  : unselectedColor,
+              color: isSelected ? selectedColor : unselectedColor,
             );
           }),
           iconTheme: WidgetStateProperty.resolveWith((states) {
@@ -1111,3 +1108,75 @@ class BottomNav extends StatelessWidget {
   }
 }
 
+/// Tablet navigation displayed as a persistent sidebar.
+class SideNav extends StatelessWidget {
+  const SideNav({
+    super.key,
+    required this.index,
+    this.onDestinationSelected,
+  });
+
+  final int index;
+  final ValueChanged<int>? onDestinationSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final unselectedColor =
+        isDark ? const Color(0xFFD1D5DB) : const Color(0xFF6B7280);
+    final selectedColor = isDark ? Colors.white : AppTheme.primary;
+
+    return Container(
+      width: 208,
+      decoration: BoxDecoration(
+        color: isDark ? colorScheme.surface : Colors.white,
+        border: Border(
+          right: BorderSide(
+            color: isDark ? colorScheme.outline : const Color(0xFFE5E7EB),
+          ),
+        ),
+      ),
+      child: NavigationRailTheme(
+        data: NavigationRailThemeData(
+          backgroundColor: Colors.transparent,
+          indicatorColor: isDark ? AppTheme.primary : const Color(0xFFE8F5EE),
+          selectedIconTheme: IconThemeData(color: selectedColor, size: 22),
+          unselectedIconTheme: IconThemeData(color: unselectedColor, size: 22),
+          selectedLabelTextStyle: TextStyle(
+            color: selectedColor,
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+          ),
+          unselectedLabelTextStyle: TextStyle(
+            color: unselectedColor,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        child: NavigationRail(
+          extended: true,
+          minExtendedWidth: 208,
+          selectedIndex: index,
+          onDestinationSelected: (i) => onDestinationSelected?.call(i),
+          destinations: [
+            for (final d in _navigationDestinations)
+              NavigationRailDestination(
+                icon: Icon(d.$1),
+                selectedIcon: Icon(d.$2),
+                label: Text(d.$3),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+const _navigationDestinations = [
+  (Iconsax.home_2, Iconsax.home_2_copy, 'Home'),
+  (Iconsax.calendar, Iconsax.calendar_copy, 'Schedule'),
+  (Iconsax.document_text_1, Iconsax.document_text_1_copy, 'News'),
+  (Iconsax.video_play, Iconsax.video_play_copy, 'Live'),
+  (Iconsax.heart, Iconsax.heart_copy, 'Favorites'),
+];

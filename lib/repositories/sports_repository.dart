@@ -94,8 +94,8 @@ class SportsRepository {
       final data = await _api.news(league);
       if (data.isNotEmpty) {
         await _cacheNews(key, data);
+        return DataResult(data);
       }
-      return DataResult(data);
     } catch (_) {}
 
     return DataResult(
@@ -112,8 +112,8 @@ class SportsRepository {
       final data = await _api.news(null);
       if (data.isNotEmpty) {
         await _cacheNews('news_all', data);
+        return DataResult(data);
       }
-      return DataResult(data);
     } catch (_) {}
 
     return DataResult(

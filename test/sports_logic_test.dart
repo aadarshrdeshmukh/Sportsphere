@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -105,6 +107,16 @@ class _UnavailableClient extends http.BaseClient {
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
     throw http.ClientException('backend unavailable');
+  }
+}
+
+class _EmptyNewsClient extends http.BaseClient {
+  @override
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    return http.StreamedResponse(
+      Stream.value(utf8.encode(jsonEncode({'articles': []}))),
+      200,
+    );
   }
 }
 
@@ -306,6 +318,40 @@ void main() {
       controller.dispose();
     });
 
+    test('SportsController exposes upcoming matches separately from live matches',
+        () async {
+      final liveMatch = SportMatch.fromEspn(event);
+      final upcomingMatch = SportMatch(
+        id: 'upcoming',
+        league: 'eng.1',
+        home: const Team(id: '1', name: 'MCI', abbreviation: 'MCI'),
+        away: const Team(id: '2', name: 'LIV', abbreviation: 'LIV'),
+        startTime: DateTime.now().add(const Duration(hours: 2)),
+        status: 'Scheduled',
+        isCompleted: false,
+        state: 'pre',
+      );
+      final completedMatch = SportMatch(
+        id: 'completed',
+        league: 'eng.1',
+        home: const Team(id: '3', name: 'MUN', abbreviation: 'MUN'),
+        away: const Team(id: '4', name: 'TOT', abbreviation: 'TOT'),
+        startTime: DateTime.now().subtract(const Duration(hours: 2)),
+        status: 'Final',
+        isCompleted: true,
+        state: 'post',
+      );
+      final controller = SportsController(_MockRepository(
+        sampleMatches: [liveMatch, upcomingMatch, completedMatch],
+      ));
+
+      await controller.refresh();
+
+      expect(controller.liveMatches, [liveMatch]);
+      expect(controller.upcomingMatches, [upcomingMatch]);
+      controller.dispose();
+    });
+
     test('SportsRepository fetches popular teams', () async {
       const mockTeam = Team(id: '359', name: 'Arsenal', abbreviation: 'ARS');
       final repo = _MockRepository(teams: [mockTeam]);
@@ -331,6 +377,21 @@ void main() {
         expect(news.data.first.id, 'sportsphere-news-1');
       expect(news.data.first.title,
           'Haaland strikes twice as Man City dominate the derby clash at the Etihad');
+    });
+
+    test('SportsRepository falls back when the news API returns no articles',
+        () async {
+      SharedPreferences.setMockInitialValues({});
+      final repo = SportsRepository(
+        api: ApiService(client: _EmptyNewsClient()),
+      );
+
+      final news = await repo.allNews();
+
+      expect(news.fromCache, isTrue);
+      expect(news.error, contains('saved/mock data'));
+      expect(news.data, isNotEmpty);
+      expect(news.data.first.id, 'sportsphere-news-1');
     });
   });
 

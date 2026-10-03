@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Sportsphere (Chrome, local web resources)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "chrome",
+      "args": [
+        "--no-web-resources-cdn"
+      ]
+    }
+  ]
+}

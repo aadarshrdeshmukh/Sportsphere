@@ -148,29 +148,48 @@ class _HomeShellState extends State<_HomeShell> {
   Widget build(BuildContext context) {
     return TabSwitcher(
       switchTab: _switchTab,
-      child: Scaffold(
-        body: IndexedStack(
-          index: _tabIndex,
-          children: [
-            Home(
-              repository: widget.repository,
-              favorites: widget.favorites,
-              auth: widget.auth,
-            ),
-            Schedule(repository: widget.repository),
-            News(repository: widget.repository),
-            Live(repository: widget.repository),
-            Favorites(
-              repository: widget.repository,
-              favorites: widget.favorites,
-              auth: widget.auth,
-            ),
-          ],
-        ),
-        bottomNavigationBar: BottomNav(
-          index: _tabIndex,
-          onDestinationSelected: _switchTab,
-        ),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isTablet = constraints.maxWidth >= 600;
+          final content = IndexedStack(
+            index: _tabIndex,
+            children: [
+              Home(
+                repository: widget.repository,
+                favorites: widget.favorites,
+                auth: widget.auth,
+              ),
+              Schedule(repository: widget.repository),
+              News(repository: widget.repository),
+              Live(repository: widget.repository),
+              Favorites(
+                repository: widget.repository,
+                favorites: widget.favorites,
+                auth: widget.auth,
+              ),
+            ],
+          );
+
+          return Scaffold(
+            body: isTablet
+                ? Row(
+                    children: [
+                      SideNav(
+                        index: _tabIndex,
+                        onDestinationSelected: _switchTab,
+                      ),
+                      Expanded(child: content),
+                    ],
+                  )
+                : content,
+            bottomNavigationBar: isTablet
+                ? null
+                : BottomNav(
+                    index: _tabIndex,
+                    onDestinationSelected: _switchTab,
+                  ),
+          );
+        },
       ),
     );
   }

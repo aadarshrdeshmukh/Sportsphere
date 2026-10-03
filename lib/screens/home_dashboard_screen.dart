@@ -159,9 +159,12 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         _myTeamsSection(colorScheme, isDark),
         const SizedBox(height: 24),
 
-        // ── 4. Today's Matches Section ──
-        _todaysMatchesSection(colorScheme, isDark),
-        const SizedBox(height: 24),
+        // Show upcoming matches only when there is nothing live to show.
+        if (_sports.liveMatches.isEmpty) ...[
+          // ── 4. Upcoming Matches Section ──
+          _todaysMatchesSection(colorScheme, isDark),
+          const SizedBox(height: 24),
+        ],
 
         // ── 5. Top News Section ──
         _topNewsSection(colorScheme, isDark),
@@ -709,8 +712,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   // ── 4. Today's Matches Section ──
   Widget _todaysMatchesSection(ColorScheme colorScheme, bool isDark) {
-    final upcoming =
-        _sports.matches.where((m) => !m.isLive && !m.isCompleted).toList();
+    final upcoming = _sports.upcomingMatches;
 
     if (upcoming.isEmpty) {
       return Column(
